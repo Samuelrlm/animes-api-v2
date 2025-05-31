@@ -27,3 +27,5 @@ const Animes = sequelize.define("Animes", {
         type: DataTypes.INTEGER
     }
 })
+
+module.exports = Animes;
