@@ -27,11 +27,7 @@ async function login(req, res){
                 .send("Invalid password")
         }
 
-       const token = jwt.sign({
-        id: user.id, email: user.email
-       }, {
-        expiresIn: process.env.JWT_EXPIRES_IN
-       })
+       const token = jwt.sign()
     } catch (error) {
         
     }
