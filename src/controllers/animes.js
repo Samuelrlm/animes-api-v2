@@ -9,8 +9,21 @@ async function createAnime(req, res){
             error: error.message
         })
     }
-} 
+}
+
+async function getAnimes(req, res){
+    try {
+        const animes = await Animes.findAll()
+
+        return res.send(animes)
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        })
+    }
+}
 
 module.exports = {
-    createAnime
+    createAnime,
+    getAnimes
 }

@@ -27,8 +27,21 @@ async function login(req, res){
                 .send("Invalid password")
         }
 
-       const token = jwt.sign()
+       const token = jwt.sign(
+        {id: user.id, email: user.email},
+        process.env.JWT_SECRET,
+        {expiresIn: process.env.JWT_EXPIRES_IN}
+       )
+
+       return res.send({
+        accessToken: token
+       })
     } catch (error) {
-        
+        console.log(error)
+        return res.status(500).send("Erro ao fazer login")
     }
+}
+
+module.exports = {
+    login
 }
