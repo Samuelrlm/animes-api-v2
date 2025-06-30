@@ -4,10 +4,11 @@ const authController = require("../controllers/auth")
 const middlwareValidate = require("../middlewares/validate")
 
 router.post("/login", authController.login)
+
 router.get(
-    "/heartbeat", 
+    "/profile", 
     middlwareValidate.validateToken,
-    authController.heartBeat
+    authController.profile
 )
 
 module.exports = router

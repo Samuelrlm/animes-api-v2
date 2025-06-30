@@ -40,11 +40,13 @@ async function login(req, res){
     }
 }
 
-function heartBeat(req, res){
-    return res.send("Token validado")
+function profile(req, res){
+    const user = req.user;
+
+    return res.send(user)
 }
 
 module.exports = {
     login,
-    heartBeat
+    profile
 }

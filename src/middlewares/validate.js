@@ -1,7 +1,8 @@
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { Users } = require("../models");
 require("dotenv").config();
 
-function validateToken(req, res, next){
+async function validateToken(req, res, next){
     const token = req.headers.authorization;
 
     if(!token){
@@ -11,7 +12,18 @@ function validateToken(req, res, next){
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-        req.user = decoded;req.user
+        const user = await Users.findOne({
+            where: {
+                id: decoded.id
+            }
+        })
+
+        if(!user){
+            return res.status(401).send("Token inválido")
+        }
+        
+        req.user = user;
+
         next()
     } catch (error) {
         return res.status(401).send("Token inválido")

@@ -1,5 +1,12 @@
 async function validateCreateAnime(req, res, next){
     const { title, description, image, episodes } = req.body;
+    const user = req.user;
+
+    if(user.role !== "admin"){
+        return res.status(403).send({
+            error: "Você não tem permissão para criar um anime"
+        })
+    }
 
     if(!title || !description || !image || !episodes){
         return res.status(400).send({
