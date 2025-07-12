@@ -1,6 +1,7 @@
 const sequelize = require("../config/database");
 const Animes = require("./animes");
 const Users = require("./users")
+const Favorites = require("./favorites")
 
 sequelize.sync({ alter: true })
     .then(() => console.log("Tabelas sincronizadas com sucesso"))
@@ -8,5 +9,6 @@ sequelize.sync({ alter: true })
 
 module.exports = {
     Animes,
-    Users
+    Users,
+    Favorites
 }
