@@ -1,20 +1,34 @@
-const express = require('express');
-const cors = require("cors")
-const animesRoutes = require("./src/routes/animes")
-const usersRoutes = require("./src/routes/users")
-const authRoutes = require("./src/routes/auth")
 require('./src/models')
+require("./src/config/sentry")
+const Sentry = require("@sentry/node")
+const http = require("http")
+const app = require("./src/app")
+const { Server } = require("socket.io")
+const chatSocket = require("./src/sokcets/chat")
 
-const app = express();
+const server = http.createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+})
+io.on("connection", (socket) => {
+    console.log(`Novo usuário conectado: ${socket.id}`)
+
+    chatSocket(io, socket)
+
+    socket.on("disconnect", () => {
+        console.log(`Usuário desconectado: ${socket.id}`)
+    })
+})
+
 const port = 6780;
 
-app.use(cors())
 
-app.use(express.json());
-app.use(animesRoutes);
-app.use(usersRoutes);
-app.use(authRoutes);
+Sentry.setupExpressErrorHandler(app);
 
-app.listen(port, () => {
+
+server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 })
